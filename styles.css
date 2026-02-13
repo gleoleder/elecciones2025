@@ -461,8 +461,7 @@ select:hover { border-color: var(--border2); }
   .header h1 { font-size: 1.15rem; }
   .header-stats { font-size: .65rem; }
   .basemap-bar { 
-    top: auto;
-    bottom: 60px;
+    top: 64px;
     right: 12px;
     left: auto;
     max-width: none;
@@ -471,6 +470,11 @@ select:hover { border-color: var(--border2); }
   }
   .basemap-bar.show {
     display: flex;
+  }
+  .basemap-btn {
+    padding: 8px 14px;
+    text-align: left;
+    white-space: nowrap;
   }
   .credit { 
     position: fixed !important;
@@ -499,8 +503,12 @@ select:hover { border-color: var(--border2); }
   }
   .sb-section { padding: 8px 12px; }
   .basemap-bar { 
-    bottom: 55px;
+    top: 58px;
     right: 8px;
+  }
+  .basemap-btn {
+    padding: 7px 12px;
+    font-size: .62rem;
   }
   .credit {
     position: fixed !important;
