@@ -399,7 +399,7 @@ select:hover { border-color: var(--border2); }
   display: none;
   position: absolute;
   top: 12px;
-  left: 12px;
+  right: 12px;
   z-index: 1001;
   flex-direction: column;
   gap: 8px;
@@ -462,19 +462,27 @@ select:hover { border-color: var(--border2); }
   .header-stats { font-size: .65rem; }
   .basemap-bar { 
     top: auto;
-    bottom: 80px;
+    bottom: 60px;
     right: 12px;
     left: auto;
     max-width: none;
     display: none;
+    flex-direction: column;
   }
   .basemap-bar.show {
     display: flex;
   }
   .credit { 
-    bottom: 12px; 
-    right: 12px;
+    position: fixed !important;
+    bottom: 8px !important;
+    right: 8px !important;
     left: auto;
+    z-index: 999;
+  }
+  .credit-btn {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
   .mobile-controls {
     display: flex;
@@ -491,20 +499,29 @@ select:hover { border-color: var(--border2); }
   }
   .sb-section { padding: 8px 12px; }
   .basemap-bar { 
-    bottom: 70px;
+    bottom: 55px;
     right: 8px;
   }
   .credit {
-    bottom: 8px;
-    right: 8px;
+    position: fixed !important;
+    bottom: 6px !important;
+    right: 6px !important;
+    z-index: 999;
   }
   .credit-btn {
     font-size: .58rem;
     padding: 4px 10px;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  .credit-panel {
+    min-width: 260px;
+    max-width: calc(100vw - 20px);
   }
   .mobile-controls {
     top: 8px;
-    left: 8px;
+    right: 8px;
     gap: 6px;
   }
   .mobile-btn {
