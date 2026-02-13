@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados Electorales Bolivia 2025</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <h1>Resultados Electorales Bolivia 2025</h1>
+    <div class="header-stats" id="hdrStats"></div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" id="sb"></aside>
+    <main class="map-wrap">
+      <!-- Controles móviles -->
+      <div class="mobile-controls">
+        <button class="mobile-btn" id="toggleSidebar" title="Mostrar/Ocultar Panel">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <button class="mobile-btn" id="toggleBasemap" title="Cambiar Mapa Base">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"></path>
+            <line x1="8" y1="2" x2="8" y2="18"></line>
+            <line x1="16" y1="6" x2="16" y2="22"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div id="basemapBar" class="basemap-bar"></div>
+      <div id="map"></div>
+      <div class="credit">
+        <button class="credit-btn" id="creditBtn">@John Leonardo Cabrera Espíndola<br>+591 60418485</button>
+        <div class="credit-panel" id="creditPanel">
+          <h3>John Leonardo Cabrera Espíndola</h3>
+          <p>
+            Mapa interactivo de resultados electorales Bolivia 2025.<br>
+            Datos del cómputo oficial del TSE, padrón electoral del OEP, 
+            listas de candidatos habilitados y sistema geoelectoral.<br><br>
+            Fuentes: 
+            <a href="https://computo.oep.org.bo" target="_blank">computo.oep.org.bo</a> · 
+
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
