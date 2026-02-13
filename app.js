@@ -77,17 +77,22 @@ function getColor(r) {
 
 // ── Popup: Primera vuelta ──
 function popupPV(h) {
-  const maxV = Math.max(...Object.values(h.v));
-  const bars = PORDER.map(p => {
-    const v = h.v[p] || 0;
+  const sortedParties = PORDER.map(p => ({ p, v: h.v[p] || 0 })).sort((a, b) => b.v - a.v);
+  const bars = sortedParties.map(({ p, v }) => {
     const pct = h.tv > 0 ? (v / h.tv * 100) : 0;
-    const w = maxV > 0 ? (v / maxV * 100) : 0;
-    return `<div class="popup-bar-row">
-      <span class="popup-bar-label">${p}</span>
-      <div class="popup-bar-track"><div class="popup-bar-fill" style="width:${w}%;background:${PH[p]}"></div></div>
-      <span class="popup-bar-val">${pct.toFixed(1)}%</span>
+    return `<div class="results-item">
+      <span class="party-dot" style="background:${PH[p]}"></span>
+      <span class="party-name">${p}</span>
+      <span class="party-pct">${pct.toFixed(1)}%</span>
+      <span class="party-votes">${num(v)}</span>
     </div>`;
   }).join('');
+  
+  const barChart = sortedParties.map(({ p, v }) => {
+    const pct = h.tv > 0 ? (v / h.tv * 100) : 0;
+    return `<div style="width:${pct}%;background:${PH[p]}"></div>`;
+  }).join('');
+  
   let cand = '';
   if (h.cand && h.cand.length) {
     cand = `<div class="popup-cand">🗳️ <b>${h.cand.length} candidato${h.cand.length > 1 ? 's' : ''}</b> vota${h.cand.length > 1 ? 'n' : ''} aquí:<br>${h.cand.slice(0, 5).map(c => `• ${c.n} — ${c.p} (${c.ca})${c.w ? ' ✓' : ''}`).join('<br>')}${h.cand.length > 5 ? `<br>… y ${h.cand.length - 5} más` : ''}</div>`;
@@ -100,7 +105,10 @@ function popupPV(h) {
       <span class="popup-winner-name">${h.g}</span>
       <span class="popup-winner-pct">${h.gp}%</span>
     </div>
-    ${bars}
+    <div class="results-panel">
+      <div class="results-bar">${barChart}</div>
+      <div class="results-items">${bars}</div>
+    </div>
     <div class="popup-meta">
       <div><div class="popup-meta-num">${num(h.hab)}</div><div class="popup-meta-label">habilitados</div></div>
       <div><div class="popup-meta-num">${num(h.emi)}</div><div class="popup-meta-label">emitidos</div></div>
@@ -117,6 +125,25 @@ function popupSV(h) {
   const pctLIBRE = svT > 0 ? (h.svLIBRE / svT * 100) : 0;
   const winner = h.svg;
   const winPct = winner === 'PDC' ? pctPDC : pctLIBRE;
+  
+  const sortedParties = [
+    { p: 'PDC', v: h.svPDC, pct: pctPDC },
+    { p: 'LIBRE', v: h.svLIBRE, pct: pctLIBRE }
+  ].sort((a, b) => b.v - a.v);
+  
+  const bars = sortedParties.map(({ p, v, pct }) => {
+    return `<div class="results-item">
+      <span class="party-dot" style="background:${PH[p]}"></span>
+      <span class="party-name">${p}</span>
+      <span class="party-pct">${pct.toFixed(1)}%</span>
+      <span class="party-votes">${num(v)}</span>
+    </div>`;
+  }).join('');
+  
+  const barChart = sortedParties.map(({ p, pct }) => {
+    return `<div style="width:${pct}%;background:${PH[p]}"></div>`;
+  }).join('');
+  
   return `
     <div class="popup-name">${h.rec}</div>
     <div class="popup-sub">${h.loc} · ${h.mun} · ${h.dep} · Circ. ${h.circ}</div>
@@ -125,13 +152,9 @@ function popupSV(h) {
       <span class="popup-winner-name">${winner}</span>
       <span class="popup-winner-pct">${winPct.toFixed(1)}%</span>
     </div>
-    <div class="popup-sv-bar">
-      <div style="width:${pctPDC}%;background:${PH.PDC}"></div>
-      <div style="width:${pctLIBRE}%;background:${PH.LIBRE}"></div>
-    </div>
-    <div class="popup-sv-items">
-      <div class="popup-sv-item"><span class="party-dot" style="background:${PH.PDC}"></span>PDC: ${num(h.svPDC)} (${pctPDC.toFixed(1)}%)</div>
-      <div class="popup-sv-item"><span class="party-dot" style="background:${PH.LIBRE}"></span>LIBRE: ${num(h.svLIBRE)} (${pctLIBRE.toFixed(1)}%)</div>
+    <div class="results-panel">
+      <div class="results-bar">${barChart}</div>
+      <div class="results-items">${bars}</div>
     </div>
     <div class="popup-meta">
       <div><div class="popup-meta-num">${num(h.hab)}</div><div class="popup-meta-label">habilitados</div></div>
@@ -293,3 +316,41 @@ function buildSb() {
 // ── Init ──
 buildSb();
 renderMarkers();
+
+// ── Mobile Controls ──
+const toggleSidebar = document.getElementById('toggleSidebar');
+const toggleBasemap = document.getElementById('toggleBasemap');
+const sidebar = document.getElementById('sb');
+const basemapBar = document.getElementById('basemapBar');
+
+toggleSidebar?.addEventListener('click', () => {
+  sidebar.classList.toggle('show');
+  toggleSidebar.classList.toggle('active');
+  if (basemapBar.classList.contains('show')) {
+    basemapBar.classList.remove('show');
+    toggleBasemap.classList.remove('active');
+  }
+});
+
+toggleBasemap?.addEventListener('click', () => {
+  basemapBar.classList.toggle('show');
+  toggleBasemap.classList.toggle('active');
+  if (sidebar.classList.contains('show')) {
+    sidebar.classList.remove('show');
+    toggleSidebar.classList.remove('active');
+  }
+});
+
+// Cerrar sidebar al hacer click fuera en móvil
+document.addEventListener('click', (e) => {
+  if (window.innerWidth <= 768) {
+    if (!e.target.closest('.sidebar') && !e.target.closest('#toggleSidebar')) {
+      sidebar.classList.remove('show');
+      toggleSidebar?.classList.remove('active');
+    }
+    if (!e.target.closest('#basemapBar') && !e.target.closest('#toggleBasemap')) {
+      basemapBar.classList.remove('show');
+      toggleBasemap?.classList.remove('active');
+    }
+  }
+});
