@@ -270,7 +270,7 @@ function buildSb() {
     h += `<div class="sb-section">
       <div class="sb-label">Segunda vuelta – PDC vs LIBRE</div>
       <div class="results-panel">
-        <div class="note-text">Proyección basada en votos de primera vuelta</div>
+        <div class="note-text">Resultados totales de la segunda vuelta</div>
         <div class="results-bar">
           <div style="width:${meta.sv.PDC / svT * 100}%;background:${PH.PDC}"></div>
           <div style="width:${meta.sv.LIBRE / svT * 100}%;background:${PH.LIBRE}"></div>
